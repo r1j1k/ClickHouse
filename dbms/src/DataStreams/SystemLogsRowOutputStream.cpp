@@ -31,6 +31,14 @@ void SystemLogsRowOutputStream::write(const Block & block)
 
     for (size_t row_num = 0; row_num < block.rows(); ++row_num)
     {
+        auto host_name = column_host_name.getDataAt(row_num);
+        if (host_name.size)
+        {
+            writeCString("[", wb);
+            writeString(host_name, wb);
+            writeCString("] ", wb);
+        }
+
         auto event_time = array_event_time[row_num];
         writeDateTimeText<'.', ':'>(event_time, wb);
 
@@ -42,14 +50,6 @@ void SystemLogsRowOutputStream::write(const Block & block)
         writeChar('0' + ((microseconds / 100) % 10), wb);
         writeChar('0' + ((microseconds / 10) % 10), wb);
         writeChar('0' + ((microseconds / 1) % 10), wb);
-
-        auto host_name = column_host_name.getDataAt(row_num);
-        if (host_name.size)
-        {
-            writeCString(" [ ", wb);
-            writeString(host_name, wb);
-            writeCString(" ]", wb);
-        }
 
         auto query_id = column_query_id.getDataAt(row_num);
         if (query_id.size)

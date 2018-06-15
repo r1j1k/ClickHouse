@@ -2,10 +2,12 @@ add_library (daemon ${SPLIT_SHARED}
     src/BaseDaemon.cpp
     src/GraphiteWriter.cpp
     src/OwnPatternFormatter.cpp
+    src/OwnFormattingChannel.cpp
 
     include/daemon/BaseDaemon.h
     include/daemon/GraphiteWriter.h
     include/daemon/OwnPatternFormatter.h
+    include/daemon/OwnFormattingChannel.h
 )
 
 if (USE_UNWIND)
